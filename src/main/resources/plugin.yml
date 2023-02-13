@@ -1,0 +1,24 @@
+name: Cozycore
+version: '${project.version}'
+main: fun.cozycraft.cozycore.Cozycore
+api-version: 1.19
+authors: [ au ]
+description: The core plugin for Cozycraft
+website: https://cozycraft.fun
+
+commands:
+  home:
+    description: "Go to your home"
+    usage: /<command> <?home_name>
+    permission: cozycraft.home
+    permission-message: "You do not have permission to use home."
+  back:
+    description: "Go to your previous location"
+    usage: /<command>
+    permission: cozycraft.back
+    permission-message: "You do not have permission to use back."
+  refer:
+    description: "Refer a friend to cozycraft."
+    usage: /<command> <username> <?java|bedrock>
+    permission: cozycraft.refer
+    permission-message: "You do not have permission to refer a friend."
