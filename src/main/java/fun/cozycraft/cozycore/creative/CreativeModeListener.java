@@ -47,6 +47,7 @@ public class CreativeModeListener implements Listener {
         }
         event.setDropItems(false);
         block.setType(Material.AIR);
+        CozycoreState.creativeBlocks.remove(block.getLocation());
     }
 
 //    @EventHandler
