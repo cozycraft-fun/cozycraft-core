@@ -27,12 +27,9 @@ public class PlayerHomeCommandExecutor implements CommandExecutor {
         Optional<PlayerHome> home = Optional.ofNullable(playerHomes.get(homeName));
 
         if (!home.isPresent()) {
-            sender.sendMessage("You do not have a home set. To set a home use /homeset [name]");
+            sender.sendMessage("I do not have a home set. I can set one using: /homeset [name]");
             return true;
         }
-
-        Bukkit.getLogger().info(home.get().location != null ? home.get().location.toString() : "is nulled...");
-        Bukkit.getLogger().info(home.get().location.toString());
 
         player.teleport(home.get().getLocation());
         return true;

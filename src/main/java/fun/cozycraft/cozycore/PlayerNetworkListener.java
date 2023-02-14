@@ -13,7 +13,7 @@ public class PlayerNetworkListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        API.getHomesForPlayer(player.getUniqueId().toString());
+        API.getHomesForPlayer(player.getUniqueId());
 //        int playerCount = Bukkit.getOnlinePlayers().size();
 //        try {
 //            API.updatePlayerCount(playerCount);

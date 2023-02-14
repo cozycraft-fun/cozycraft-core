@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import fun.cozycraft.cozycore.CozycoreState;
 import fun.cozycraft.cozycore.api.API;
-import fun.cozycraft.cozycore.api.LocationJsonAdapter;
+import fun.cozycraft.cozycore.api.PlayerHomeJSONAdapter;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class PlayerHomeUnsetCommandExecutor implements CommandExecutor {
 
-    private final Moshi moshi = new Moshi.Builder().add(new LocationJsonAdapter()).build();
+    private final Moshi moshi = new Moshi.Builder().add(new PlayerHomeJSONAdapter()).build();
     private final JsonAdapter<PlayerHomeCreateResponsePayload> createPlayerHomeJsonAdapter = moshi.adapter(PlayerHomeCreateResponsePayload.class);
 
     @Override
@@ -56,7 +56,8 @@ public class PlayerHomeUnsetCommandExecutor implements CommandExecutor {
                         player.sendMessage("Failed to delete home, please try again. If the problem persists contact the admin.");
                         return;
                     }
-                    playerHomes.remove(data.get().home.name);
+                    String homeId = data.get().getHome().getId();
+                    playerHomes.remove(homeId);
                     CozycoreState.homes.put(player.getUniqueId(), playerHomes);
                     player.sendMessage("Home unset.");
                 }
