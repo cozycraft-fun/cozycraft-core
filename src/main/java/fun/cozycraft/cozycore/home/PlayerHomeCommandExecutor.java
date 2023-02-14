@@ -1,6 +1,7 @@
 package fun.cozycraft.cozycore.home;
 
 import fun.cozycraft.cozycore.CozycoreState;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,6 +30,9 @@ public class PlayerHomeCommandExecutor implements CommandExecutor {
             sender.sendMessage("You do not have a home set. To set a home use /homeset [name]");
             return true;
         }
+
+        Bukkit.getLogger().info(home.get().location != null ? home.get().location.toString() : "is nulled...");
+        Bukkit.getLogger().info(home.get().location.toString());
 
         player.teleport(home.get().getLocation());
         return true;

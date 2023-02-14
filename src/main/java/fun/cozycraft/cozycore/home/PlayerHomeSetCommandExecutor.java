@@ -4,9 +4,11 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import fun.cozycraft.cozycore.CozycoreState;
 import fun.cozycraft.cozycore.api.API;
+import fun.cozycraft.cozycore.api.LocationJsonAdapter;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +23,7 @@ import java.util.UUID;
 
 public class PlayerHomeSetCommandExecutor implements CommandExecutor {
 
-    private static final Moshi moshi = new Moshi.Builder().build();
+    private final Moshi moshi = new Moshi.Builder().add(new LocationJsonAdapter()).build();
     private final JsonAdapter<PlayerHomeCreateResponsePayload> createPlayerHomeJsonAdapter = moshi.adapter(PlayerHomeCreateResponsePayload.class);
 
     @Override
@@ -34,7 +36,7 @@ public class PlayerHomeSetCommandExecutor implements CommandExecutor {
         Player player = (Player) sender;
         Location location = player.getLocation();
         Map<String, PlayerHome> playerHomes = CozycoreState.homes.getOrDefault(player.getUniqueId(), new HashMap<>());
-        PlayerHome newHome = new PlayerHome(UUID.randomUUID(), homeName, location);
+        PlayerHome newHome = new PlayerHome(UUID.randomUUID().toString(), homeName, location);
 
         API.createPlayerHome(player.getUniqueId().toString(), newHome, new Callback() {
             @Override
@@ -45,10 +47,12 @@ public class PlayerHomeSetCommandExecutor implements CommandExecutor {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                PlayerHomeCreateResponsePayload data = createPlayerHomeJsonAdapter.fromJson(response.body().source());
-                playerHomes.put(homeName, data.home);
-                CozycoreState.homes.put(player.getUniqueId(), playerHomes);
-                player.sendMessage("Home set.");
+                try (ResponseBody responseBody = response.body()) {
+                    PlayerHomeCreateResponsePayload data = createPlayerHomeJsonAdapter.fromJson(responseBody.source());
+                    playerHomes.put(homeName, data.home);
+                    CozycoreState.homes.put(player.getUniqueId(), playerHomes);
+                    player.sendMessage("Home set.");
+                }
             }
         });
 

@@ -4,9 +4,11 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import fun.cozycraft.cozycore.CozycoreState;
 import fun.cozycraft.cozycore.api.API;
+import fun.cozycraft.cozycore.api.LocationJsonAdapter;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,7 +22,7 @@ import java.util.Optional;
 
 public class PlayerHomeUnsetCommandExecutor implements CommandExecutor {
 
-    private static final Moshi moshi = new Moshi.Builder().build();
+    private final Moshi moshi = new Moshi.Builder().add(new LocationJsonAdapter()).build();
     private final JsonAdapter<PlayerHomeCreateResponsePayload> createPlayerHomeJsonAdapter = moshi.adapter(PlayerHomeCreateResponsePayload.class);
 
     @Override
@@ -48,10 +50,16 @@ public class PlayerHomeUnsetCommandExecutor implements CommandExecutor {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                PlayerHomeCreateResponsePayload data = createPlayerHomeJsonAdapter.fromJson(response.body().source());
-                playerHomes.remove(data.home.name);
-                CozycoreState.homes.put(player.getUniqueId(), playerHomes);
-                player.sendMessage("Home unset.");
+                try (ResponseBody responseBody = response.body()) {
+                    Optional<PlayerHomeCreateResponsePayload> data = Optional.ofNullable(createPlayerHomeJsonAdapter.fromJson(responseBody.source()));
+                    if (!data.isPresent()) {
+                        player.sendMessage("Failed to delete home, please try again. If the problem persists contact the admin.");
+                        return;
+                    }
+                    playerHomes.remove(data.get().home.name);
+                    CozycoreState.homes.put(player.getUniqueId(), playerHomes);
+                    player.sendMessage("Home unset.");
+                }
             }
         });
 

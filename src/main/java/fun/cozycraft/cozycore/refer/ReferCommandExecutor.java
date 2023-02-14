@@ -11,6 +11,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,12 +44,14 @@ public class ReferCommandExecutor implements CommandExecutor {
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    if (!response.isSuccessful()) {
-                        sender.sendMessage("Failed to invite " + username);
-                        throw new IOException("Failed to invite user: " + response);
+                    try (ResponseBody responseBody = response.body()) {
+                        if (!response.isSuccessful()) {
+                            sender.sendMessage("Failed to invite " + username);
+                            throw new IOException("Failed to invite user: " + response);
+                        }
+                        TextComponent message = responseToMessage(responseBody, username);
+                        sender.sendMessage(message);
                     }
-                    TextComponent message = responseToMessage(response, username);
-                    sender.sendMessage(message);
                 }
 
                 @Override
@@ -68,12 +71,14 @@ public class ReferCommandExecutor implements CommandExecutor {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    sender.sendMessage("Failed to invite " + username);
-                    throw new IOException("Failed to invite user: " + response);
+                try (ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) {
+                        sender.sendMessage("Failed to invite " + username);
+                        throw new IOException("Failed to invite user: " + response);
+                    }
+                    TextComponent message = responseToMessage(responseBody, username);
+                    sender.sendMessage(message);
                 }
-                TextComponent message = responseToMessage(response, username);
-                sender.sendMessage(message);
             }
 
             @Override
@@ -86,8 +91,8 @@ public class ReferCommandExecutor implements CommandExecutor {
         return true;
     }
 
-    private TextComponent responseToMessage(Response response, String username) throws IOException {
-        ReferFriendResponsePayload data = jsonAdapter.fromJson(response.body().source());
+    private TextComponent responseToMessage(ResponseBody responseBody, String username) throws IOException {
+        ReferFriendResponsePayload data = jsonAdapter.fromJson(responseBody.source());
         Component url = Component.text("Click to copy the link.")
                 .color(NamedTextColor.AQUA)
                 .decorate(TextDecoration.UNDERLINED)
