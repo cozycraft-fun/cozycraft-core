@@ -54,7 +54,7 @@ public class API {
     }
 
     public static String API_URL(String pathname) {
-        return Optional.of(System.getenv(ENV_API_URL) + pathname)
-                .orElse(DEFAULT_API_URL + pathname);
+        return (Optional.ofNullable(System.getenv(ENV_API_URL))
+                .orElse(DEFAULT_API_URL)) + pathname;
     }
 }

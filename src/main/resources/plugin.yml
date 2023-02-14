@@ -9,16 +9,65 @@ website: https://cozycraft.fun
 commands:
   home:
     description: "Go to your home"
-    usage: /<command> <?home_name>
+    usage: "/<command> [name]"
     permission: cozycraft.home
     permission-message: "You do not have permission to use home."
+  homes:
+    description: "List your homes"
+    usage: "/<command>"
+    permission: cozycraft.homes
+    permission-message: "You do not have permission to use homes."
+  homeset:
+    description: "Set a new home"
+    usage: "/<command> [name]"
+    permission: cozycraft.homeset
+    aliases:
+      - sethome
+    permission-message: "You do not have permission to use <command>."
+  homeunset:
+    description: "Unset a home"
+    usage: "/<command> [name]"
+    permission: cozycraft.homeunset
+    aliases:
+      - unsethome
+    permission-message: "You do not have permission to use <command>."
   back:
     description: "Go to your previous location"
-    usage: /<command>
+    usage: "/<command>"
     permission: cozycraft.back
     permission-message: "You do not have permission to use back."
   refer:
     description: "Refer a friend to cozycraft."
-    usage: /<command> <username> <?java|bedrock>
+    usage: "/<command> <username> [java|bedrock]"
     permission: cozycraft.refer
     permission-message: "You do not have permission to refer a friend."
+
+permissions:
+  cozycraft.home:
+    description: Allows /home command
+    default: op
+  cozycraft.homes:
+    description: Allows /homes command
+    default: op
+  cozycraft.homeset:
+    description: Allows /homeset command
+    default: op
+  cozycraft.homeunset:
+    description: Allows /homeunset command
+    default: op
+  cozycraft.back:
+    description: Allows /back command
+    default: op
+  cozycraft.refer:
+    description: Allows /refer command
+    default: op
+  cozycraft.*:
+    description: Wildcard permission
+    default: op
+    children:
+      cozycraft.home: true
+      cozycraft.homes: true
+      cozycraft.homeset: true
+      cozycraft.homeunset: true
+      cozycraft.back: true
+      cozycraft.refer: true

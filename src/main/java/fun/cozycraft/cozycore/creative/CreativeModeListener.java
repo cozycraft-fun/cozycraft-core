@@ -1,6 +1,6 @@
 package fun.cozycraft.cozycore.creative;
 
-import com.destroystokyo.paper.event.block.BlockDestroyEvent;
+//import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import fun.cozycraft.cozycore.CozycoreState;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -49,12 +49,12 @@ public class CreativeModeListener implements Listener {
         block.setType(Material.AIR);
     }
 
-    @EventHandler
-    public void onBlockDestroy(BlockDestroyEvent event) {
-        Block block = event.getBlock();
-        if (!CozycoreState.creativeBlocks.contains(block.getLocation())) {
-            return;
-        }
-        block.setType(Material.AIR);
-    }
+//    @EventHandler
+//    public void onBlockDestroy(BlockDestroyEvent event) {
+//        Block block = event.getBlock();
+//        if (!CozycoreState.creativeBlocks.contains(block.getLocation())) {
+//            return;
+//        }
+//        block.setType(Material.AIR);
+//    }
 }

@@ -3,11 +3,13 @@ package fun.cozycraft.cozycore.home;
 import lombok.Data;
 import org.bukkit.Location;
 
+import java.util.UUID;
+
 @Data
 public class PlayerHome {
 
-    String id;
-    String name;
-    Location location;
+    final UUID id;
+    final String name;
+    final Location location;
 
 }
