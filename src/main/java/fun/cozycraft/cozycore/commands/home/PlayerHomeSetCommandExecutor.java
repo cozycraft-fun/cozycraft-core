@@ -1,10 +1,12 @@
-package fun.cozycraft.cozycore.home;
+package fun.cozycraft.cozycore.commands.home;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import fun.cozycraft.cozycore.CozycoreState;
 import fun.cozycraft.cozycore.api.API;
 import fun.cozycraft.cozycore.api.PlayerHomeJSONAdapter;
+import fun.cozycraft.cozycore.models.PlayerHome;
+import fun.cozycraft.cozycore.api.home.PlayerHomeCreateResponsePayload;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -40,7 +42,7 @@ public class PlayerHomeSetCommandExecutor implements CommandExecutor {
         PlayerHome existingHome = playerHomes.get(homeName);
 
         if (existingHome != null) {
-            newHome = new PlayerHome(existingHome.id, existingHome.name, location);
+            newHome = new PlayerHome(existingHome.getId(), existingHome.getName(), location);
             API.updatePlayerHome(player.getUniqueId().toString(), newHome, new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {

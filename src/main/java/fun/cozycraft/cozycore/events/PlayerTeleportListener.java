@@ -1,5 +1,6 @@
-package fun.cozycraft.cozycore;
+package fun.cozycraft.cozycore.events;
 
+import fun.cozycraft.cozycore.CozycoreState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;

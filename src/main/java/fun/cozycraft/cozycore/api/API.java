@@ -3,15 +3,13 @@ package fun.cozycraft.cozycore.api;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import fun.cozycraft.cozycore.CozycoreState;
-import fun.cozycraft.cozycore.home.PlayerHome;
-import fun.cozycraft.cozycore.home.PlayerHomesResponsePayload;
-import fun.cozycraft.cozycore.refer.ReferFriendRequestPayload;
+import fun.cozycraft.cozycore.models.PlayerHome;
+import fun.cozycraft.cozycore.api.home.PlayerHomesResponsePayload;
+import fun.cozycraft.cozycore.api.refer.ReferFriendRequestPayload;
 import okhttp3.*;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 

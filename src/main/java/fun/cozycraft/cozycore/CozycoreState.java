@@ -1,6 +1,6 @@
 package fun.cozycraft.cozycore;
 
-import fun.cozycraft.cozycore.home.PlayerHome;
+import fun.cozycraft.cozycore.models.PlayerHome;
 import org.bukkit.Location;
 
 import java.util.*;

@@ -1,4 +1,4 @@
-package fun.cozycraft.cozycore.back;
+package fun.cozycraft.cozycore.commands.back;
 
 import fun.cozycraft.cozycore.CozycoreState;
 import org.bukkit.Location;

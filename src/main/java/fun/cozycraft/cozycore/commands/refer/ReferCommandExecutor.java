@@ -1,8 +1,10 @@
-package fun.cozycraft.cozycore.refer;
+package fun.cozycraft.cozycore.commands.refer;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import fun.cozycraft.cozycore.api.API;
+import fun.cozycraft.cozycore.api.refer.ReferFriendRequestPayload;
+import fun.cozycraft.cozycore.api.refer.ReferFriendResponsePayload;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -18,9 +20,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class ReferCommandExecutor implements CommandExecutor {
 
@@ -96,7 +96,7 @@ public class ReferCommandExecutor implements CommandExecutor {
         Component url = Component.text("Click to copy the link.")
                 .color(NamedTextColor.AQUA)
                 .decorate(TextDecoration.UNDERLINED)
-                .clickEvent(ClickEvent.copyToClipboard(data.url));
+                .clickEvent(ClickEvent.copyToClipboard(data.getUrl()));
 
         return Component.text("Successfully invited ")
                 .append(Component.text(username, NamedTextColor.AQUA))

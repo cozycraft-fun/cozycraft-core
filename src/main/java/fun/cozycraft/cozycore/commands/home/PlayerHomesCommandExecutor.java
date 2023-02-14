@@ -1,6 +1,7 @@
-package fun.cozycraft.cozycore.home;
+package fun.cozycraft.cozycore.commands.home;
 
 import fun.cozycraft.cozycore.CozycoreState;
+import fun.cozycraft.cozycore.models.PlayerHome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

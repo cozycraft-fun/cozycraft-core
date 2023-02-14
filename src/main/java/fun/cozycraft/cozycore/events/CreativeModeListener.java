@@ -1,4 +1,4 @@
-package fun.cozycraft.cozycore.creative;
+package fun.cozycraft.cozycore.events;
 
 //import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import fun.cozycraft.cozycore.CozycoreState;

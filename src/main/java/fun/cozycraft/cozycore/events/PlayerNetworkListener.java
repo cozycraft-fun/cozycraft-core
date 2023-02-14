@@ -1,4 +1,4 @@
-package fun.cozycraft.cozycore;
+package fun.cozycraft.cozycore.events;
 
 import fun.cozycraft.cozycore.api.API;
 import org.bukkit.Bukkit;

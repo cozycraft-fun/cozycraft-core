@@ -2,7 +2,7 @@ package fun.cozycraft.cozycore.api;
 
 import com.squareup.moshi.FromJson;
 import com.squareup.moshi.ToJson;
-import fun.cozycraft.cozycore.home.PlayerHome;
+import fun.cozycraft.cozycore.models.PlayerHome;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
