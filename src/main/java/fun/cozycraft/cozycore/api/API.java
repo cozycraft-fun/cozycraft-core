@@ -2,11 +2,17 @@ package fun.cozycraft.cozycore.api;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import fun.cozycraft.cozycore.CozycoreState;
+import fun.cozycraft.cozycore.home.PlayerHome;
+import fun.cozycraft.cozycore.home.PlayerHomeCreateResponsePayload;
+import fun.cozycraft.cozycore.home.PlayerHomesResponsePayload;
 import fun.cozycraft.cozycore.refer.ReferFriendRequestPayload;
+import fun.cozycraft.cozycore.refer.ReferFriendResponsePayload;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Optional;
 
 public class API {
@@ -15,7 +21,8 @@ public class API {
     private static final String DEFAULT_API_URL = "http://localhost:3000";
     private static final String API_KEY = System.getenv("COZYCRAFT_API_KEY");
     public static final OkHttpClient client = new OkHttpClient();
-    public static final Moshi moshi = new Moshi.Builder().build();
+    private static final Moshi moshi = new Moshi.Builder().build();
+    private static final JsonAdapter<PlayerHomesResponsePayload> playerHomesJsonAdapter = moshi.adapter(PlayerHomesResponsePayload.class);
 
     public static void updatePlayerCount(int playerCount) throws Exception {
         RequestBody requestBody = new FormBody.Builder().add("playerCount", String.valueOf(playerCount)).build();
@@ -38,14 +45,50 @@ public class API {
     public static void referFriend(ReferFriendRequestPayload payload, Callback callback) {
         RequestBody requestBody = new FormBody.Builder()
                 .add("username", payload.getUsername())
-                .add("type", payload.getType())
+                .add("accountType", payload.getType())
                 .add("referredBy", payload.getReferredBy())
                 .build();
         Request request = buildRequest("/api/refer").post(requestBody).build();
         client.newCall(request).enqueue(callback);
     }
 
-    public static void getHomesForPlayer(String playerId) throws Exception {}
+    public static void getHomesForPlayer(String playerId) throws Exception {
+        Request request = buildRequest("/api/homes?playerId=" + playerId).get().build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                PlayerHomesResponsePayload data = playerHomesJsonAdapter.fromJson(response.body().source());
+                CozycoreState.homes.getOrDefault(playerId, new HashMap<>()).putAll(data.getHomes());
+            }
+        });
+    }
+
+    public static void createPlayerHome(String playerId, PlayerHome home, Callback callback) {
+        RequestBody requestBody = new FormBody.Builder()
+                .add("id", home.getId().toString())
+                .add("name", home.getName())
+                .add("x", String.valueOf(home.getLocation().getX()))
+                .add("z", String.valueOf(home.getLocation().getZ()))
+                .add("y", String.valueOf(home.getLocation().getY()))
+                .add("playerId", playerId)
+                .build();
+        Request request = buildRequest("/api/homes").post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void deletePlayerHome(String playerId, String homeId, Callback callback) {
+        RequestBody requestBody = new FormBody.Builder()
+                .add("id", homeId)
+                .add("playerId", playerId)
+                .build();
+        Request request = buildRequest("/api/homes").delete(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
 
     public static Request.Builder buildRequest(String pathname) {
         return new Request.Builder()

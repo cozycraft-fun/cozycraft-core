@@ -1,7 +1,6 @@
 package fun.cozycraft.cozycore;
 
 import fun.cozycraft.cozycore.back.PlayerBackCommandExecutor;
-import fun.cozycraft.cozycore.creative.CreativeModeListener;
 import fun.cozycraft.cozycore.home.PlayerHomeCommandExecutor;
 import fun.cozycraft.cozycore.home.PlayerHomesCommandExecutor;
 import fun.cozycraft.cozycore.home.PlayerHomeSetCommandExecutor;
@@ -18,7 +17,7 @@ public final class Cozycore extends JavaPlugin {
     @Override
     public void onEnable() {
         PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new CreativeModeListener(), this);
+//        pm.registerEvents(new CreativeModeListener(), this);
         pm.registerEvents(new PlayerTeleportListener(), this);
         pm.registerEvents(new PlayerNetworkListener(), this);
 //        pm.registerEvents(new PlayerHomeListener(), this);
